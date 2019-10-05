@@ -1,0 +1,29 @@
+﻿@model WebSite.Models.WheelYourBalanceSendMailModel
+@{
+    Layout = null;
+}
+
+<div class="alert alert-success">
+    Ваш результат отправлен Вам на почту.<br />
+    Если результат Вам не пришел в течении нескольких минут - проверьте папку СПАМ
+</div>
+
+<form class="subscribe-form d-none" action="https://natagerman.autoweboffice.ru/?r=personal/newsletter/sub/add&id=7538&lg=ru&Contact[id_newsletter]=78" method="post" enctype="application/x-www-form-urlencoded" accept-charset="UTF-8">
+    <input class="form-control" maxlength="255" name="Contact[name]" value="@Model.Name" type="text" placeholder="Ваше имя">
+    <input class="form-control" maxlength="255" name="Contact[email]" value="@Model.Email" type="text" placeholder="Адрес электронной почты (e-mail)">
+    <input type="hidden" value="1" name="required_fields[name]">
+    <input type="hidden" value="1" name="required_fields[email]">
+    <input type="hidden" value="78" name="Contact[id_newsletter]">
+    <input type="hidden" value="0" name="Contact[id_advertising_channel_page]">
+    <input type="hidden" value="78" name="Contact[id_newsletter]">
+    <input type="hidden" value="37" name="formId">
+    <input type="hidden" value="3956824205" name="formVc">
+    <input class="btn btn-primary" type="submit" value="Отправить">
+</form>
+
+
+<script type="text/javascript">
+    $(function ($) {
+        $(".subscribe-form").submit();
+    });
+</script>

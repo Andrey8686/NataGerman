@@ -1,0 +1,23 @@
+﻿@model WebSite.Models.WheelYourBalanceViewModel
+
+
+<h1 class="mb-5">Ваш результат. Вот так выглядит колесо Вашего баланса.</h1>
+
+<div class="row justify-content-center">
+    <div class="col">
+        <img class="img-fluid d-table m-auto" src="@ViewBag.LinkToWheel" alt="" />
+    </div>
+    <div class="col">
+
+        @for (var i = 0; i < Model.Spheres.Count; i++)
+        {
+            <div class="font-weight-bold" style="color: @Model.Spheres.ToList()[i].Color;">
+                @Model.Spheres.ToList()[i].Name: @((double)Model.Spheres.ToList()[i].Questions.Sum(x => x.Mark) / Model.Spheres.ToList()[i].Questions.Count)
+            </div>
+        }
+
+    </div>
+</div>
+
+
+@Html.ActionLink("Пройти тест", "ResetMark", null, new { @class = "btn btn-outline-primary d-block mt-4" })

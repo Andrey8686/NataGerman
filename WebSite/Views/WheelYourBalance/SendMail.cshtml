@@ -1,0 +1,23 @@
+﻿@model WebSite.Models.WheelYourBalanceSendMailModel
+@{
+    Layout = null;
+}
+
+<h3>Можем отправить по почте:</h3>
+
+@using (Ajax.BeginForm("SendMail", "WheelYourBalance", null, new AjaxOptions { UpdateTargetId = "SendMailBlock", HttpMethod = "post" }, new { @class = "" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row">
+        <div class="col-4 flex-grow-0">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Ваше имя" })
+        </div>
+        <div class="col-4 flex-grow-0">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Адрес электронной почты (e-mail)" })
+        </div>
+        <div class="col flex-grow-0">
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </div>
+    </div>
+}

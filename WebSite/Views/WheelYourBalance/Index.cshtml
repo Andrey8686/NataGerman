@@ -1,0 +1,134 @@
+﻿@using WebSite.Models
+@model WebSite.Models.WheelYourBalanceViewModel
+@{
+    var sphere = Model.Spheres.FirstOrDefault(x => x.Questions.Any(y => y.Mark == null));
+    var question = sphere?.Questions.FirstOrDefault(x => x.Mark == null);
+
+    ViewBag.Title = sphere?.Name;
+}
+
+@if (question != null)
+{
+    <h1 style="color: @sphere.Color;">@sphere.Name</h1>
+    <h4>@Html.Raw(question.Text)</h4>
+
+    using (Html.BeginForm("SetMark", "WheelYourBalance", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-12 mt-3 mb-4">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark0" value="0" checked="checked">
+                    <label class="form-check-label" for="Mark0">0</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark1" value="1">
+                    <label class="form-check-label" for="Mark1">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark2" value="2">
+                    <label class="form-check-label" for="Mark2">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark3" value="3">
+                    <label class="form-check-label" for="Mark3">3</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark4" value="4">
+                    <label class="form-check-label" for="Mark4">4</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark5" value="5">
+                    <label class="form-check-label" for="Mark5">5</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark6" value="6">
+                    <label class="form-check-label" for="Mark6">6</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark7" value="7">
+                    <label class="form-check-label" for="Mark7">7</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark8" value="8">
+                    <label class="form-check-label" for="Mark8">8</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark9" value="9">
+                    <label class="form-check-label" for="Mark9">9</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Mark" id="Mark10" value="10">
+                    <label class="form-check-label" for="Mark10">10</label>
+                </div>
+            </div>
+
+            @if (Model.Spheres.Any(a => a.Questions.Any(b => b.Mark != null)))
+            {
+                <div class="col flex-grow-0">
+                    @Html.ActionLink("Назад", "GoBack", null, new { @class = "btn btn-danger" })
+                </div>
+            }
+
+            <div class="col flex-grow-0">
+                <button type="submit" class="btn btn-primary">Дальше</button>
+            </div>
+        </div>
+
+    }
+}
+else
+{
+        <h1 class="mb-5">Благодарим Вас за доверие и прохождение теста!</h1>
+
+    <div class="row justify-content-center">
+        <div class="col">
+            <img class="img-wheel img-fluid d-table m-auto" src="@Url.Action("GetWheelYourBalance", "WheelYourBalance", Model)" alt="" />
+        </div>
+        <div class="col">
+
+            @for (var i = 0; i < Model.Spheres.Count; i++)
+            {
+                <div class="font-weight-bold" style="color: @Model.Spheres.ToList()[i].Color;">
+                    @Model.Spheres.ToList()[i].Name: @((double)Model.Spheres.ToList()[i].Questions.Sum(x => x.Mark) / Model.Spheres.ToList()[i].Questions.Count)
+                </div>
+            }
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 text-center pt-2">
+            <a href='#' class="btn btn-info" onclick='return SaveWheel()'>С К А Ч А Т Ь</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p class="my-3">
+                Вы видите, что у Вас есть сектор, который провальный и требует срочного восстановления. Если Вы хотите получить пошаговую схему быстрых и комфортных улучшений - оставьте свой мейл в форме ниже и последовательная схема шагов прямо сейчас придет Вам на почту.
+                <br />
+                <br />
+                Свободы Вам!<br />
+                Ната.
+            </p>
+        </div>
+    </div>
+    
+    <div id="SendMailBlock" class="pt-5 pb-5">
+        @Html.Partial("SendMail", new WheelYourBalanceSendMailModel())
+    </div>
+    
+    @Html.ActionLink("Пройти тест еще раз", "ResetMark", null, new { @class = "btn btn-outline-primary d-block" })
+}
+
+
+<script type="text/javascript">
+    function SaveWheel() {
+        var url = document.getElementsByClassName("img-wheel")[0].getAttribute("src");
+        var link = document.createElement("a");    
+        link.setAttribute("href", url);
+        link.setAttribute("download", "Wheel.png");
+        link.click();
+        return false;
+    }
+</script>

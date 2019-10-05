@@ -1,0 +1,63 @@
+﻿@model WebSite.Models.ExportToExcelModel
+
+<h1>Экспорт пользователей в Excel</h1>
+
+@using (Html.BeginForm("ExportToExcel", "WheelYourBalance", FormMethod.Post, new {@class = "" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-12">
+            @Html.ValidationSummary()
+        </div>
+        <div class="col-3">
+            @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control", placeholder = "Дата с", autocomplete = "off" })
+        </div>
+        <div class="col-3">
+            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control", placeholder = "Дата по", autocomplete = "off" })
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Скачать</button>
+        </div>
+    </div>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+
+            var dateFormat = "dd.mm.yy",
+                from = $("#StartDate").datepicker({
+                        dateFormat: dateFormat,
+                        changeMonth: true,
+                        numberOfMonths: 1
+
+                    })
+                    .on("change", function () {
+                        to.datepicker("option", "minDate", getDate(this));
+                    }).mask("99.99.9999"),
+                to = $("#EndDate").datepicker({
+                        dateFormat: dateFormat,
+                        changeMonth: true,
+                        numberOfMonths: 1
+                    })
+                    .on("change", function () {
+                        from.datepicker("option", "maxDate", getDate(this));
+                    }).mask("99.99.9999");
+
+            function getDate(element) {
+                var date;
+                try {
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
+
+        });
+    </script>
+}
